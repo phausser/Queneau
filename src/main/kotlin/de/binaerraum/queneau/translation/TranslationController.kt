@@ -3,8 +3,9 @@ package de.binaerraum.queneau.translation
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 class TranslationController(
@@ -12,7 +13,6 @@ class TranslationController(
 ) {
 
     companion object {
-        // Liste der 99 Stile aus Queneaus "Stilübungen" (deutsche Übersetzung)
         val STYLES = listOf(
             "Notizen", "Doppelte Buchführung", "Litotes", "Metaphorisch", "Rückläufig", "Überraschungen", "Traum",
             "Voraussage", "Synchysis", "Regenbogen", "Wortspiel", "Zögern", "Präzision",
@@ -34,32 +34,18 @@ class TranslationController(
             "Nutslos", "Moderner Stil", "Probabilistisch", "Porträt", "Mathematisch", "Westindisch", "Zwischenrufe",
             "Gezierter Stil", "Unerwartet"
         )
-
-        // Beispielhafte Sprachen (auf Deutsch benannt)
-        val LANGUAGES = listOf("Englisch", "Deutsch", "Französisch", "Spanisch", "Italienisch")
     }
 
     @GetMapping("/")
     fun showForm(model: Model): String {
         model.addAttribute("styles", STYLES)
-        model.addAttribute("languages", LANGUAGES)
         return "translation/index"
     }
 
-    @PostMapping("/translate")
+    @GetMapping("/exercice-de-style")
+    @ResponseBody
     fun translate(
         @RequestParam text: String,
         @RequestParam style: String,
-        @RequestParam language: String,
-        model: Model
-    ): String {
-        val result = translationService.translateWithStyle(text, style, language)
-        model.addAttribute("originalText", text)
-        model.addAttribute("style", style)
-        model.addAttribute("language", language)
-        model.addAttribute("translatedText", result)
-        model.addAttribute("styles", STYLES)
-        model.addAttribute("languages", LANGUAGES)
-        return "translation/index"
-    }
+    ) = translationService.translateWithStyle(text, style)
 }
