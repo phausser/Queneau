@@ -3,6 +3,14 @@ const input = document.getElementById('input');
 const styleSelect = document.getElementById('style-select');
 const output = document.getElementById('output-text');
 const copyBtn = document.getElementById('copy-btn');
+const loadingOverlay = document.getElementById('loading-overlay');
+
+function toggleLoading(isLoading) {
+    loadingOverlay.style.display = isLoading ? 'flex' : 'none';
+    input.disabled = isLoading;
+    styleSelect.disabled = isLoading;
+    applyBtn.disabled = isLoading;
+}
 
 applyBtn.addEventListener('click', async () => {
     const text = encodeURIComponent(input.value.trim());
@@ -14,6 +22,8 @@ applyBtn.addEventListener('click', async () => {
         copyBtn.style.display = 'none';
         return;
     }
+
+    toggleLoading(true);
 
     try {
         const username = 'pat';
@@ -37,6 +47,8 @@ applyBtn.addEventListener('click', async () => {
     } catch (error) {
         output.textContent = 'Fehler: ' + error.message;
         copyBtn.style.display = 'none';
+    } finally {
+        toggleLoading(false);
     }
 });
 
