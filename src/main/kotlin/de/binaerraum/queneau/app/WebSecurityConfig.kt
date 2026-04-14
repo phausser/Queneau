@@ -30,7 +30,7 @@ class WebSecurityConfig {
 
     @Bean
     fun userDetailsService(): UserDetailsService? {
-        val user: UserDetails? = User
+        val user: UserDetails = User
             .withUsername("pat")
             .password("{noop}pat") // {noop} bedeutet, dass das Passwort unverschlüsselt ist
             .roles("USER")
