@@ -1,5 +1,6 @@
 package de.binaerraum.queneau.app
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -12,27 +13,27 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfig {
+class WebSecurityConfig(
+    @Value("\${app.security.username}") private val username: String,
+    @Value("\${app.security.password}") private val password: String,
+) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .authorizeHttpRequests({ authz ->
-                authz
-                    .anyRequest().authenticated()
-            })
-            .httpBasic {
-                it.realmName("Queneau Translation App")
+            .authorizeHttpRequests { authz ->
+                authz.anyRequest().authenticated()
             }
+            .formLogin { }
 
         return http.build()
     }
 
     @Bean
-    fun userDetailsService(): UserDetailsService? {
+    fun userDetailsService(): UserDetailsService {
         val user: UserDetails = User
-            .withUsername("pat")
-            .password("{noop}pat") // {noop} bedeutet, dass das Passwort unverschlüsselt ist
+            .withUsername(username)
+            .password("{noop}$password") // {noop} bedeutet, dass das Passwort unverschlüsselt ist
             .roles("USER")
             .build()
 
