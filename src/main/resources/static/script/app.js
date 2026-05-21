@@ -26,15 +26,9 @@ applyBtn.addEventListener('click', async () => {
     toggleLoading(true);
 
     try {
-        const username = 'pat';
-        const password = 'pat';
-        const auth = btoa(`${username}:${password}`);
-
         const response = await fetch(`/exercice-de-style?text=${text}&style=${style}`, {
             method: 'GET',
-            headers: {
-                'Authorization': `Basic ${auth}`
-            }
+            credentials: 'same-origin'
         });
 
         if (!response.ok) {

@@ -38,10 +38,14 @@ jobs:
 
       - name: Restart App on VM
         uses: appleboy/ssh-action@v1.2.5
+        env:
+          APP_SECURITY_PASSWORD: ${{ secrets.APP_SECURITY_PASSWORD }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: APP_SECURITY_PASSWORD
           script: |
+            export APP_SECURITY_PASSWORD="$APP_SECURITY_PASSWORD"
             cd ${{ secrets.APP_DIR }}
             ./start-app.sh
