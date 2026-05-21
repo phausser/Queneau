@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 
@@ -30,10 +32,13 @@ class WebSecurityConfig(
     }
 
     @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+    @Bean
     fun userDetailsService(): UserDetailsService {
         val user: UserDetails = User
             .withUsername(username)
-            .password("{noop}$password") // {noop} bedeutet, dass das Passwort unverschlüsselt ist
+            .password(passwordEncoder().encode(password))
             .roles("USER")
             .build()
 
