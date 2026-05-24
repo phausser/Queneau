@@ -24,9 +24,32 @@ class WebSecurityConfig(
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .authorizeHttpRequests { authz ->
-                authz.anyRequest().authenticated()
+                // Statische Ressourcen und die Login-Seite erlauben, alle anderen Requests schützen
+                authz
+                    .requestMatchers(
+                        "/css/**",
+                        "/img/**",
+                        "/script/**",
+                        "/js/**",
+                        "/webjars/**",
+                        "/favicon.ico",
+                        "/login"
+                    ).permitAll()
+                    .anyRequest().authenticated()
             }
-            .formLogin { }
+            // Eigene Login-Seite verwenden
+            .formLogin { form ->
+                // Custom login page, processing URL and default success URL to avoid first-redirect issues
+                form
+                    .loginPage("/login")
+                    .loginProcessingUrl("/perform_login")
+                    .defaultSuccessUrl("/", true)
+                    .permitAll()
+            }
+            // Optional: Logout zurück zur Login-Seite
+            .logout { logout ->
+                logout.logoutSuccessUrl("/login?logout").permitAll()
+            }
 
         return http.build()
     }

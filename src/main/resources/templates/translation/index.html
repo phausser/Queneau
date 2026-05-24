@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUENEAU</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Dancing+Script&family=Georgia&display=swap"
-          rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<div class="container">
-    <h1>QUENEAU</h1>
-    <label for="input">Eingabetext:</label>
-    <textarea id="input" rows="5" placeholder="Gib deinen Text ein..."></textarea>
+    <main class="app-shell">
+        <header class="brand-panel">
+            <img class="brand-logo" src="img/queneau.png" alt="QUENEAU">
+        </header>
 
-    <label for="style-select">Stil auswählen:</label>
-    <select id="style-select">
-        <option th:each="s : ${styles}" th:value="${s}" th:text="${s}"></option>
-    </select>
+        <section class="composer" aria-label="Text umschreiben">
+            <textarea id="input" placeholder="Dein Text..."></textarea>
 
-    <button id="apply-btn">STIL ANWENDEN</button>
+            <div class="style-picker">
+                <select id="style-select" class="source-select" aria-hidden="true" tabindex="-1">
+                    <option value="" selected disabled>Exercices de style...</option>
+                    <option th:each="s : ${styles}" th:value="${s}" th:text="${s}"></option>
+                </select>
+                <button id="style-button" class="style-button" type="button" aria-haspopup="listbox"
+                    aria-expanded="false">
+                    Exercices de style...
+                </button>
+                <ul id="style-options" class="style-options" role="listbox"></ul>
+            </div>
 
-    <div id="output">
-        <button id="copy-btn" title="Text kopieren"></button>
-        <div id="output-text">
-        </div>
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+            <div id="history" class="history" aria-live="polite"></div>
+        </section>
+    </main>
 
-        <div class="loading-overlay" id="loading-overlay">
-            <div class="spinner"></div>
-        </div>
-
-    </div>
-    <script src="/script/app.js"></script>
-</div>
+    <script src="script/app.js"></script>
 </body>
+
 </html>
