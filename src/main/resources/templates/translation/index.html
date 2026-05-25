@@ -23,7 +23,7 @@
             <div class="style-picker">
                 <select id="style-select" class="source-select" aria-hidden="true" tabindex="-1">
                     <option value="" selected disabled>Exercices de style...</option>
-                    <option th:each="s : ${styles}" th:value="${s}" th:text="${s}"></option>
+                    <option th:each="s : ${styles}" th:value="${s.first}" th:text="${s.first}" th:title="${s.second}"></option>
                 </select>
                 <button id="style-button" class="style-button" type="button" aria-haspopup="listbox"
                     aria-expanded="false">

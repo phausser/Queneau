@@ -7,18 +7,24 @@ import org.springframework.stereotype.Service
 @Service
 class TranslationService(private val chatClient: ChatClient) {
 
-    fun translateWithStyle(text: String, style: String): String? =
+    // Jetzt empfangen wir sowohl den Stilnamen als auch die ausführliche Beschreibung
+    fun translateWithStyle(text: String, styleName: String, styleDescription: String): String? =
         PromptTemplate(TRANSLATION_PROMPT)
-            .create(mapOf("style" to style, "text" to text))
+            .create(mapOf("styleName" to styleName, "styleDescription" to styleDescription, "text" to text))
             .let { prompt -> chatClient.prompt(prompt).call().content() }
 
     private companion object {
         val TRANSLATION_PROMPT = """
-            Übersetze den folgenden Text ins deutsche der die charakteristischen Merkmale von Raymund Queneaus 
-            '{style}' in Stilübungen aufgreift: 
-            {text}. 
-            
-            Antworte nur mit der Übersetzung, ohne weitere Erklärungen, Kommentare oder Entschuldigung.
+            Übersetze den folgenden Text ins Deutsche und gestalte die Ausgabe so, dass sie die charakteristischen
+            Merkmale der Stilübung '{styleName}' aufgreift.
+
+            Beschreibung der Stilübung:
+            {styleDescription}
+
+            Ursprungstext:
+            {text}
+
+            Antworte nur mit der Übersetzung, ohne weitere Erklärungen, Kommentare oder Entschuldigungen.
         """.trimIndent()
     }
 }
