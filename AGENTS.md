@@ -40,9 +40,27 @@ src/main/resources/
 - **Tests:** Unit-Tests mit JUnit 5 + Kotlin-Test; Integrationstests mit `@SpringBootTest`.
 - **Secrets:** Niemals API-Keys oder Passwörter einchecken. Lokale Werte gehören in `application-local.properties` (in `.gitignore`).
 
+### Spring-spezifisch
+
+- Verwende für alle OpenAI-Aufrufe die Spring-AI `ChatClient`-Instanz (siehe `src/main/kotlin/de/binaerraum/queneau/translation/AiConfig.kt`).
+- Konstruktor-Injection bevorzugen (Beispiel: `TranslationService` erhält `ChatClient` per Konstruktor).
+- Prompt-Erstellung erfolgt mit `PromptTemplate` und `chatClient.prompt(prompt).call().content()` (siehe `src/main/kotlin/de/binaerraum/queneau/translation/TranslationService.kt`).
+
 ## Abhängigkeiten hinzufügen
 
 Neue Abhängigkeiten immer in `build.gradle.kts` eintragen. Dependabot überwacht alle Gradle- und GitHub-Actions-Abhängigkeiten automatisch.
+
+## Wichtige Dateien
+
+| Datei | Zweck |
+|---|---|
+| `src/.../translation/TranslationService.kt` | Kernlogik und Prompt-Erstellung (verwendet `PromptTemplate` und `ChatClient`) |
+| `src/.../translation/TranslationController.kt` | Web-Controller (GET/POST), stellt `/` und `/exercice-de-style` bereit |
+| `src/.../translation/AiConfig.kt` | OpenAI-/Spring-AI-Konfiguration (liefert `ChatClient`-Bean via `OpenAiChatModel`) |
+| `src/main/resources/application.properties` | App-Konfiguration (ohne Secrets) |
+| `build.gradle.kts` | Abhängigkeiten und Build-Logik |
+| `.github/workflows/deploy.yaml` | CI/CD-Pipeline |
+| `.github/dependabot.yml` | Automatische Abhängigkeits-Updates |
 
 ## CI/CD
 
