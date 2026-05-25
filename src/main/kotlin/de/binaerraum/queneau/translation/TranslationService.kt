@@ -14,8 +14,11 @@ class TranslationService(private val chatClient: ChatClient) {
 
     private companion object {
         val TRANSLATION_PROMPT = """
-            Übersetze den folgenden Text ins deutsche im Stil von '{style}' aus Raymond Queneaus Stilübungen: {text}.
-            Antworte nur mit der Übersetzung, ohne weitere Erklärungen oder Kommentare.
+            Übersetze den folgenden Text ins deutsche der die charakteristischen Merkmale von Raymund Queneaus 
+            '{style}' in Stilübungen aufgreift: 
+            {text}. 
+            
+            Antworte nur mit der Übersetzung, ohne weitere Erklärungen, Kommentare oder Entschuldigung.
         """.trimIndent()
     }
 }
