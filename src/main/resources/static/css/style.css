@@ -157,7 +157,9 @@ textarea::placeholder {
     padding: 9px 24px 0;
     color: var(--muted);
     font-family: var(--display);
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 700;
+    animation: queneau-blink 1s step-end infinite;
 }
 
 .status:empty {
@@ -184,6 +186,13 @@ textarea::placeholder {
 
 .translation-text strong {
     font-weight: 700;
+}
+
+/* Animation für blinkenden Status-Text */
+@keyframes queneau-blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 @media (max-width: 480px) {
