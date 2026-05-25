@@ -7,11 +7,15 @@ import org.springframework.stereotype.Service
 @Service
 class TranslationService(private val chatClient: ChatClient) {
 
-    fun translateWithStyle(text: String, style: String): String? {
-        val promptTemplate = PromptTemplate(
-            "Übersetze den folgenden Text ins deutsche im Stil von '{style}' aus Raymond Queneaus Stilübungen: {text}"
-        )
-        val prompt = promptTemplate.create(mapOf("style" to style, "text" to text))
-        return chatClient.prompt(prompt).call().content()
+    fun translateWithStyle(text: String, style: String): String? =
+        PromptTemplate(TRANSLATION_PROMPT)
+            .create(mapOf("style" to style, "text" to text))
+            .let { prompt -> chatClient.prompt(prompt).call().content() }
+
+    private companion object {
+        val TRANSLATION_PROMPT = """
+            Übersetze den folgenden Text ins deutsche im Stil von '{style}' aus Raymond Queneaus Stilübungen: {text}.
+            Antworte nur mit der Übersetzung, ohne weitere Erklärungen oder Kommentare.
+        """.trimIndent()
     }
 }

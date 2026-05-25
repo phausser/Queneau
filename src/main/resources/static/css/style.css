@@ -1,5 +1,5 @@
 :root {
-    --page: #ffffff;
+    --page: #000000;
     --ink: #101010;
     --muted: #6f6a61;
     --paper: #f8f8f8;
@@ -29,8 +29,6 @@ body {
     color: #ffffff;
     padding: 42px 0 48px;
     text-align: center;
-    margin-top: 20px;
-    border-radius: 10px 10px 0 0;
 }
 
 .style-button,
@@ -106,6 +104,7 @@ textarea::placeholder {
     font-size: 1.12rem;
     line-height: 58px;
     text-align: left;
+    font-weight: 700;
 }
 
 .style-button:disabled {
@@ -126,6 +125,7 @@ textarea::placeholder {
     overflow-y: auto;
     background: #000000;
     list-style: none;
+    font-weight: 700;
 }
 
 .style-picker.is-open .style-options {
@@ -143,6 +143,7 @@ textarea::placeholder {
     padding: 0 24px;
     font-size: 1rem;
     text-align: left;
+    font-weight: 700;
 }
 
 .style-options button:hover,
